@@ -9,7 +9,7 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
 const ProfileCard = () => {
     return (
-        <Card className="shadow-2xl max-w-sm h-[30rem] flex flex-col items-center justify-center gap-6 p-8
+        <Card className="shadow-2xl w-full  min-w-[18rem] h-[30rem] flex flex-col items-center justify-center gap-6 p-8
         bg-gradient-to-br from-pink-200 via-purple-100 to-indigo-200
         hover:shadow-xl transition-all duration-300 group">
 

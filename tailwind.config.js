@@ -1,24 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    // ... existing code ...
     theme: {
         extend: {
+            animation: {
+                'gradientBG': 'gradientBG 15s ease infinite',
+            },
             keyframes: {
                 gradientBG: {
-                    '0%': { backgroundPosition: '0% 50%' },
-                    '50%': { backgroundPosition: '100% 50%' },
-                    '100%': { backgroundPosition: '0% 50%' },
-                },
-            },
-            animation: {
-                gradientBG: 'gradientBG 5s infinite linear',
-            },
-            backgroundSize: {
-                '200%': '200% 200%',
-            },
-        },
-    },
-    plugins: [],
-};
-
-
-
+                    '0%, 100%': {
+                        'transform': 'translateX(0%)'
+                    },
+                    '50%': {
+                        'transform': 'translateX(-50%)'
+                    }
+                }
+            }
+        }
+    }
+    // ... existing code ...
+}

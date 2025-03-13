@@ -1,17 +1,27 @@
 import React from 'react';
 import ArticleCard from "@/feature/article/compoents/articlecard";
 import {ProcessedArticle, ProcessedArticleItemList} from "@/feature/article/types";
+import {Blocks, Volume2} from 'lucide-react';
 
 // import {getAll} from "@/feature/article/services/article";
 
-const ArticleList = ({data, title,limit}: { data: ProcessedArticleItemList; title?: string;limit?:number }) => {
-    const limitedData =limit ? data.data.slice(0, limit) : data.data;
+const ArticleList = ({data, title, limit}: { data: ProcessedArticleItemList; title?: string; limit?: number }) => {
+    console.log("data", data)
+    const limitedData = limit && data.articles ? data.articles.slice(0, limit) : data.articles;
 
     return (
-        <div className="my-10">
-            <h2 className="h2-bold mb-4">{title}</h2>
-            {limitedData && limitedData.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+        <div className="">
+            <div className={"flex items-center gap-2 border-b border-dashed text-[var(--greyFont)] mt-[1rem]"}>
+                <Blocks className="as variant='ghost'"/>
+                <h2 className="h2-bold">
+                    {title}
+                </h2>
+            </div>
+
+
+            {limitedData && data.articles.length > 0 ? (
+                <div
+                    className="grid  gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 ">
                     {limitedData
                         .map((processedArticle: ProcessedArticle) => (
                             <ArticleCard

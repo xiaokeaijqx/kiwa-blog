@@ -1,15 +1,31 @@
 import axiosInstance from "@/lib/axios";
 import {BASE_URL} from "@/lib/constans";
-import {ArticleItemList, ProcessedArticle, ProcessedArticleItemList} from "@/feature/article/types";
+import {
+    ProcessedCategoryItemList,
+    ProcessedCategoryItems
+} from "@/feature/article/types";
 import {articleTransformer} from "@/feature/article/transformers";
 
-export const querySortArticles = async (): Promise<ProcessedArticleItemList> => {
-    const {data} = await axiosInstance.get(`${BASE_URL}/public/v1/article/article/sortArticles`);
+export const querySortArticles = async (): Promise<ProcessedCategoryItemList> => {
+    const {data} = await axiosInstance.get(`${BASE_URL}/article/main`);
+    //article的合集
+    console.log(data)
 
-    const processData:ProcessedArticle[] = data.data.map(articleTransformer);
+    // const processData:ProcessedCategoryItems[]=data.data
+    //     .filter((categoryItems: ProcessedCategoryItems) => categoryItems.articles)
+    //     .flatMap((CategoryItems: ProcessedCategoryItems) => CategoryItems.articles!.map(articleTransformer))
+    data.data.forEach((categoryItems: ProcessedCategoryItems) => {
+        if (categoryItems.articles) {
+            categoryItems.articles = categoryItems.articles.map(articleTransformer);
+        }
+    });
+    console.log(data.data)
+
     return {
-        data: processData,
-        total: data.total,
-        success: data.success
+        data: data.data,
+        errorCode: data.errorCode,
+        errorMessage: data.errorMessage,
+        success: data.success,
+        showType: data.showType
     };
 }
