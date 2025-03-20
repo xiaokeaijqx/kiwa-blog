@@ -1,3 +1,4 @@
+'use clientw'
 import axios from "axios";
 import {toast} from "sonner";
 

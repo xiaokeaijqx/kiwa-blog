@@ -1,11 +1,16 @@
 import React from 'react';
 import ArticleCard from "@/feature/article/compoents/articlecard";
 import {ProcessedArticle, ProcessedArticleItemList} from "@/feature/article/types";
-import {Blocks, Volume2} from 'lucide-react';
+import {Blocks} from 'lucide-react';
 
-// import {getAll} from "@/feature/article/services/article";
 
-const ArticleList = ({data, title, limit}: { data: ProcessedArticleItemList; title?: string; limit?: number }) => {
+interface ArticleListProps {
+    data: ProcessedArticleItemList;
+    title?: string;
+    limit?: number;
+}
+
+const ArticleList = ({data, title, limit}: ArticleListProps) => {
     console.log("data", data)
     const limitedData = limit && data.articles ? data.articles.slice(0, limit) : data.articles;
 
@@ -26,6 +31,7 @@ const ArticleList = ({data, title, limit}: { data: ProcessedArticleItemList; tit
                         .map((processedArticle: ProcessedArticle) => (
                             <ArticleCard
                                 key={processedArticle.id} data={processedArticle}
+
                             />
 
                         ))}

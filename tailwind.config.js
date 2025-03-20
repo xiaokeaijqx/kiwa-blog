@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import daisyui from 'daisyui';
+
 module.exports = {
     // ... existing code ...
     theme: {
@@ -17,6 +19,16 @@ module.exports = {
                 }
             }
         }
+
+
     }
+
+    ,
+    daisyui: {
+        themes: ["light", "dark", "cupcake"], // 按需选择主题
+        darkTheme: "dark" // 默认暗黑主题名称
+    },
+    plugins: [daisyui]
+
     // ... existing code ...
 }

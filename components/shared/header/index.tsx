@@ -7,7 +7,7 @@ import Search from "@/components/shared/header/search";
 
 const Header = () => {
     return (
-        <header className="  w-full h-[5rem] fixed top-0 left-0 z-50 bg-white/20  transition-all duration-300">
+        <header className="  w-full h-[5rem] fixed top-0 left-0 z-50 bg-black/20  transition-all duration-300">
             <div className=" flex justify-between items-center p-4 h-[5rem] max-w-[1200px] mx-auto">
                 <div>
                     <Link href={"/"}>

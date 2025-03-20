@@ -3,34 +3,40 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import Image from "next/image";
 import indexImage from "@/public/indexImage.jpg";
 import {ProcessedArticle} from "@/feature/article/types";
+import {useRouter} from "next/navigation";
 
 const ArticleCard =
     ({data}: { data: ProcessedArticle }
     ) => {
+        const router = useRouter();
         return (
             <Card
-                className={"shadow-lg w-full h-[32rem] max-w-md flex flex-col hover:shadow-2xl transition-all duration-300 group my-[1rem]"}>
-                <CardHeader className={"w-full h-[18rem]  overflow-hidden relative rounded-t-lg"}>
-                    <Image
-                        src={indexImage}
-                        alt={"首页图片"}
-                        sizes="(max-width: 768px) 100vw, 400px"
-                        fill
-                        className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                        priority
-                    />
-                </CardHeader>
+                className={"shadow-lg w-full h-[32rem] max-w-md flex flex-col hover:shadow-2xl transition-all duration-300 group my-[1rem]"}
+                onClick={() => {
+                    return router.push(`/article/${data.id}`)
+                }}>
+                    < CardHeader
+                 className={"w-full h-[18rem]  overflow-hidden relative rounded-t-lg"}>
+                <Image
+                    src={indexImage}
+                    alt={"首页图片"}
+                    sizes="(max-width: 768px) 100vw, 400px"
+                    fill
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                    priority
+                />
+            </CardHeader>
 
 
-                <div className={"flex flex-col flex-1 p-6"}>
-                    <CardTitle className={"line-clamp-2 text-2xl font-bold mb-2 min-h-[3.5rem]"}>
-                        {data.title}
-                    </CardTitle>
+        <div className={"flex flex-col flex-1 p-6"}>
+            <CardTitle className={"line-clamp-2 text-2xl font-bold mb-2 min-h-[3.5rem]"}>
+                {data.title}
+            </CardTitle>
 
-                    <CardDescription className={"text-sm text-gray-600 flex-1"}>
-                        <div className={"flex justify-start mb-4 gap-[1rem]"}>
+            <CardDescription className={"text-sm text-gray-600 flex-1"}>
+                <div className={"flex justify-start mb-4 gap-[1rem]"}>
 
-                        <span className={'flex mr-3 items-center'}>
+                   <span className={'flex mr-3 items-center'}>
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path d="M14.656 512a497.344 497.344 0 1 0 994.688 0 497.344 497.344 0 1 0-994.688 0z"
                       fill="#FF0000"></path>
@@ -40,7 +46,7 @@ const ArticleCard =
               </svg>
                             {data.hotScore}热度
             </span>
-                            <span className={'flex mr-3 items-center'}>
+                    <span className={'flex mr-3 items-center'}>
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                     d="M113.834667 291.84v449.194667a29.013333 29.013333 0 0 0 28.842666 29.013333h252.928v90.453333l160.597334-90.453333h252.928a29.013333 29.013333 0 0 0 29.013333-29.013333V291.84a29.013333 29.013333 0 0 0-29.013333-29.013333h-665.6a29.013333 29.013333 0 0 0-29.696 29.013333z"
@@ -69,43 +75,44 @@ const ArticleCard =
                     d="M959.488 354.645333a99.84 99.84 0 0 0-23.722667-127.488 78.677333 78.677333 0 0 0-142.848-64.170666l-11.605333 20.138666a17.066667 17.066667 0 0 0-20.821333 7.168l-32.085334 55.466667H142.677333a46.250667 46.250667 0 0 0-45.909333 46.08v449.194667a46.08 46.08 0 0 0 45.909333 46.08h236.032v73.386666a17.066667 17.066667 0 0 0 8.362667 14.848 17.066667 17.066667 0 0 0 8.704 2.218667 17.066667 17.066667 0 0 0 8.362667-2.218667l156.672-88.234666h248.32a46.08 46.08 0 0 0 46.08-46.08V398.677333L921.6 283.306667a17.066667 17.066667 0 0 0-4.266667-21.504l1.877334-3.413334a65.365333 65.365333 0 0 1 10.410666 79.189334l-53.077333 91.989333a56.832 56.832 0 0 0 20.821333 77.653333 17.066667 17.066667 0 0 0 24.234667-6.314666 17.066667 17.066667 0 0 0-6.997333-23.04 23.04 23.04 0 0 1-8.362667-31.061334z m-138.410667 386.389334a11.946667 11.946667 0 0 1-11.946666 11.946666H556.202667a17.066667 17.066667 0 0 0-8.362667 2.218667l-134.997333 76.117333v-61.269333a17.066667 17.066667 0 0 0-17.066667-17.066667H142.677333a11.946667 11.946667 0 0 1-11.776-11.946666V291.84a11.946667 11.946667 0 0 1 11.776-11.946667h565.930667L574.464 512a17.066667 17.066667 0 0 0-1.706667 12.970667L597.333333 615.253333H265.898667a17.066667 17.066667 0 1 0 0 34.133334h352.938666a17.066667 17.066667 0 0 0 5.802667 0l102.4-35.328a17.066667 17.066667 0 0 0 9.216-7.509334l85.333333-147.968z m-204.8-184.661334l63.829334 36.864-49.322667 17.066667z m206.848-170.666666v1.365333l-108.373333 186.709333-102.4-59.050666L781.482667 221.866667l102.4 59.050666z m76.458667-161.28L887.466667 244.224l-76.970667-44.373333 11.264-19.797334a44.544 44.544 0 1 1 77.141333 44.544z"
                     fill="#3D3D63"></path>
               </svg>
-                                {data.commentCount}评论
+                        {data.commentCount}评论
             </span>
-                            <span className={'flex mr-3 items-center'}>
+                    <span className={'flex mr-3 items-center'}>
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                                     <path
                                         d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z"
                                         fill="#FF713C"></path>
                                 </svg>
-                                {data.favoriteCount}赞
+                        {data.favoriteCount}赞
             </span>
-                        </div>
+                </div>
 
-                    </CardDescription>
+            </CardDescription>
 
-                    <CardContent className="p-0 mt-auto">
+            <CardContent className="p-0 mt-auto">
 
 
-                        {/*{data.tags.map((tag) =>*/}
-                        {/*    <div className={"bg-b/20"} key={tag.tagId}>*/}
-                        {/*        {tag.tagName}*/}
-                        {/*    </div>)*/}
-                        {/*}*/}
-                        <div className="flex flex-wrap gap-2">
-                            {data.tags.map((tag) => (
-                                <span
-                                    key={tag.tagId}
-                                    className="px-3 py-1 text-sm bg-blue-100/50 rounded-full transition-colors hover:bg-blue-100"
-                                >
+                {/*{data.tags.map((tag) =>*/}
+                {/*    <div className={"bg-b/20"} key={tag.tagId}>*/}
+                {/*        {tag.tagName}*/}
+                {/*    </div>)*/}
+                {/*}*/}
+                <div className="flex flex-wrap gap-2">
+                    {data.tags.map((tag) => (
+                        <span
+                            key={tag.tagId}
+                            className="px-3 py-1 text-sm bg-blue-100/50 rounded-full transition-colors hover:bg-blue-100"
+                        >
                                      #{tag.tagName}
                                     </span>))}
-                        </div>
-
-                    </CardContent>
-
                 </div>
-            </Card>
-        );
+
+            </CardContent>
+
+        </div>
+    </Card>
+    )
+        ;
     };
 
 
