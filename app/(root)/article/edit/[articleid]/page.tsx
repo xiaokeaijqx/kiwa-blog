@@ -201,15 +201,19 @@ export default function ArticleEditorPage() {
                             />
                             {/*文章分类categoryId*/}
                             <Controller
-                                classname="w-full "
+
 
                                 control={form.control}
                                 name="categoryId"
                                 rules={{required: "请选择分类"}}
                                 render={({field}) => (
-                                    <FormItem>
+                                    <FormItem className={"h-[8rem]"}>
                                         <FormLabel>文章分类</FormLabel>
-                                        <Select onValueChange={field.onChange}
+                                        <Select
+
+                                            // defaultValue={field.value}
+                                            onValueChange={field.onChange}
+
                                                 onOpenChange={(open) => {
                                                     if (open && categoryList.length === 0) {
                                                         getCategory().then(() => {});
@@ -219,8 +223,9 @@ export default function ArticleEditorPage() {
 
                                                 {/*{!field.value && ("选择分类")}*/}
                                                 <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder={categoryloading ? "加载中..." : "选择分类"} />
+                                                    <SelectTrigger
+                                                        className="w-full   border-gray-500 h-full">
+                                                        <SelectValue className={""} placeholder={categoryloading ? "加载中..." : "选择分类"} />
                                                     </SelectTrigger>
                                                 </FormControl>
 
@@ -240,16 +245,16 @@ export default function ArticleEditorPage() {
 
                             {/*tagID*/}
                             <Controller
-                                classname="w-full"
+
                                 control={form.control}
                                 name="tagIds"
                                 render={({field}) => (
-                                    <FormItem >
+                                    <FormItem>
                                         <FormLabel>文章标签</FormLabel>
                                         <Select
 
                                             onValueChange={(value) => {
-                                                const valueNum = parseInt(value);
+                                                const valueNum = Number(value);
                                                 const newValue = field.value || [];
                                                 if (newValue.includes(valueNum)) {
                                                     field.onChange(newValue.filter(v => v !== valueNum));
@@ -264,7 +269,9 @@ export default function ArticleEditorPage() {
                                             }}
                                         >
                                             <FormControl>
-                                                <SelectTrigger>
+                                                <SelectTrigger
+                                                    className="w-full   border-gray-500 h-full"
+                                                >
                                                     <SelectValue placeholder={tagloading ? "加载中..." : "选择标签"}>
                                                         {field.value?.length
                                                             ? `已选择 ${field.value.length} 个标签`
@@ -296,30 +303,23 @@ export default function ArticleEditorPage() {
                                             </SelectContent>
                                         </Select>
                                         <FormMessage/>
-                {/* 显示已选择的标签 */}
-                <div className="flex flex-wrap gap-2 mt-2">
-                            {field.value?.map(tagId => {
-                                const tag = tagList.find(t => t.tagId === tagId);
-                                return tag && (
-                                    <div
-                                        key={tag.tagId}
-                                        className="bg-gray-100 px-2 py-1 rounded-md text-sm flex items-center gap-1"
-                                    >
-                                        {tag.tagName}
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                field.onChange(field.value.filter(id => id !== tagId));
-                                            }}
-                                            className="text-gray-500 hover:text-gray-700"
-                                        >
-
-                                        </button>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
+                                        {/* 显示已选择的标签 */}
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {field.value?.map(tagId => {
+                                                const tag = tagList.find(t => t.tagId === tagId);
+                                                return tag && (
+                                                    <div key={tag.tagId}
+                                                         className="bg-blue-100 px-2 py-1 rounded-md text-sm flex items-center gap-1">
+                                                        {tag.tagName}
+                                                        <button type="button"
+                                                                onClick={() => field.onChange(field.value.filter(id => id !== tagId))}
+                                                                className="text-red-500 hover:text-red-700">
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
 
 
                                     </FormItem>
