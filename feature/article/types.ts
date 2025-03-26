@@ -1,14 +1,51 @@
-export interface catgorytype {
-    categoryId: number;
-    categoryName: string;
 
-}
 
-export interface tagtype {
+export interface TagType {
     tagId: number;
     tagName: string;
 }
 
+
+export type TagList = {
+    data?: TagType[] | null;
+    errorCode?: number | null;
+    errorMessage?: null | string;
+    showType?: number;
+    success?: boolean ;
+
+}
+
+
+
+export interface CategoryType  {
+    categoryId: number
+    categoryName: string;
+    sort?: number | null;
+}
+export interface CategoryList  {
+    data: CategoryType[];
+    errorCode?: number | null;
+    errorMessage?: null | string;
+    showType?: number | null;
+    success?: boolean | null;
+
+}
+
+
+//创建文章
+export interface ArticleFormValues  {
+    title: string;
+    content: string;
+    categoryId: number;
+    tagIds: [
+
+    ];
+    cover:
+        {
+            image: File | null
+        } ;
+    isDraft: boolean;
+};
 
 //  一篇文章
 export interface ArticleListItem {
@@ -18,8 +55,8 @@ export interface ArticleListItem {
     cover: string;
     author: string;
     publishTime: string;
-    category: catgorytype
-    tags: tagtype[];
+    category: CategoryType
+    tags: TagType[];
     "hotScore": number,
     "likeCount": number,
     "favoriteCount": number,
@@ -36,9 +73,9 @@ export interface ProcessedArticle {
     cover: string;
     author: string;
     publishTime: string;
-    category: catgorytype;
+    category: CategoryType;
     tags:
-        tagtype[];
+        TagType[];
     hotScore: number,
     likeCount: number,
     favoriteCount: number,

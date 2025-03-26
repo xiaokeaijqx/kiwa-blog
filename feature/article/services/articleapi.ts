@@ -1,10 +1,11 @@
 import axiosInstance from "@/lib/axios";
 import {BASE_URL} from "@/lib/constans";
 import {
+    ArticleFormValues, CategoryType,
 
-    catgorytype, ProcessedArticleOne,
+    ProcessedArticleOne,
     ProcessedCategoryItemList,
-    ProcessedCategoryItems, tagtype
+    ProcessedCategoryItems, TagType,
 } from "@/feature/article/types";
 import {articleTransformer} from "@/feature/article/transformers";
 
@@ -43,12 +44,24 @@ export  const queryArticleById = async (id:string):Promise<ProcessedArticleOne>=
         showType: data.showType
     };
 }
-export const queryCategory = async (): Promise<catgorytype[]> => {
-    const response = await axiosInstance.get(`${BASE_URL}/basic-system/sysRole/page`);
-    return response.data.data;
+// export const queryCategory = async (): Promise<catgorytype[]> => {
+//     const response = await axiosInstance.get(`${BASE_URL}/basic-system/sysRole/page`);
+//     return response.data.data;
+// }
+
+export const queryCategory = async (): Promise<CategoryType[]> => {
+    const {data} = await axiosInstance.get(`${BASE_URL}/category`);
+    return data.data;
+}
+export const queryTag = async (): Promise<TagType[]> => {
+    const {data} = await axiosInstance.get(`${BASE_URL}/tag`);
+    return data.data;
 }
 
-export const queryTag = async (): Promise<tagtype[]> => {
-    const response = await axiosInstance.get(`${BASE_URL}/tag/all`);
-    return response.data.data;
+export const queryArticle = async (data: ArticleFormValues) => {
+    const response = await axiosInstance.post(`${BASE_URL}/article`,
+        data
+    );
+    console.log(data)
+    return response;
 }

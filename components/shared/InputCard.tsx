@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {ProcessedArticle, ProcessedCommentList} from "@/feature/article/types";
 import {Send, Smile, Image} from "lucide-react";
-import {Button} from "@/components/ui/button";
 import {ArticleComment} from "@/feature/article/services/commentapi";
 import CommentCard from "@/components/shared/CommentCard";
 import {toast} from "sonner";
 
-const InputCard = (data: ProcessedArticle) => {
+const InputCard = ({data}: {data:ProcessedArticle}) => {
     const [comment, setComment] = useState('');
     const [commentData, setCommentData] = useState<ProcessedCommentList>()
     const [isSubmitting, setIsSubmitting] = useState(false);

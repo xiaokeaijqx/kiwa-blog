@@ -9,11 +9,8 @@ import Image from "next/image";
 import {Calendar, Eye,  User} from "lucide-react";
 import Thumbs from "@/components/shared/Thumbs";
 
-import Commentcard from "@/components/shared/InputCard";
 import {useParams} from "next/navigation";
 import InputCard from "@/components/shared/InputCard"; // 导入 useRouter
-
-// import { useRouter } from 'next/router';
 
 
 const Page = () => {
@@ -70,7 +67,7 @@ const Page = () => {
             }
         };
         getQueryArticleById();
-    }, []); // 添加 router 作为依赖
+    }, []);
 
     if (loading) {
         return <div>加载中...</div>; // 加载状态
@@ -178,8 +175,8 @@ const Page = () => {
             </div>
             {/*评论区*/}
             {/* 评论区域 */}
-            <section className={""}>
-                <InputCard/>
+            <section className={"w-full"}>
+                <InputCard data={article}/>
                 <div className={""}>
 
 
