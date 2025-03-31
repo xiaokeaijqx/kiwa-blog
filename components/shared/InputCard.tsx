@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {ProcessedArticle, ProcessedCommentList} from "@/feature/article/types";
+import React, {useEffect, useState} from 'react';
+import { CommentNodeResponse, ProcessedArticle} from "@/feature/article/types";
 import {Send, Smile, Image} from "lucide-react";
-import {ArticleComment} from "@/feature/article/services/commentapi";
+import {ArticleComment, queryComment} from "@/feature/article/services/commentapi";
 import CommentCard from "@/components/shared/CommentCard";
 import {toast} from "sonner";
 
 const InputCard = ({data}: {data:ProcessedArticle}) => {
     const [comment, setComment] = useState('');
-    const [commentData, setCommentData] = useState<ProcessedCommentList>()
+    const [commentData, setCommentData] = useState<CommentNodeResponse[]|  undefined| null>()
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const userId = "11";
@@ -26,9 +26,9 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
 
         try {
             // 提交评论
-            const allComment = await ArticleComment(data.id, comment, userId);
+            const response = await ArticleComment(data.id, comment, userId,"2","type");
             console.log('Comment submitted successfully!');
-            setCommentData(allComment)
+            // setCommentData(response.data)
             // 清空输入框
             setComment('');
             toast.success("评论成功！");
@@ -43,6 +43,18 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
         }
     };
 
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const response = await queryComment({ targetId: "your-target-id" });
+                setCommentData(response.data)
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+        fetchComments()
+    }, []);
+
     return (
         <div className={"min-w-[600px]  w-[70vw] mx-auto "}>
             <h3 className={"pb-[2rem]"}>
@@ -52,6 +64,7 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
             <div className={"w-full bg-white shadow-box rounded-[2rem] bg-white py-[3rem] px-[2rem]"}>
                 <div className={"w-full"}>
                     <fieldset>
+
                         <legend className="m">发表评论</legend>
 
                         <form onSubmit={handleSubmit}>
@@ -94,22 +107,24 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
                         </form>
                     </fieldset>
                 </div>
-            </div>
-            <div className={"w-full bg-white shadow-box rounded-[2rem] bg-white py-[3rem] px-[2rem] mt-[2rem]"}>
-                {commentData?.data ? (
-                    commentData.data.map((comment) => (
-                        <CommentCard
-                            key={comment.id}
-                            data={comment}
+                <div className={"w-full mt-[2rem]"}>
+                    {commentData ? (
+                        commentData.map((comment) => (
 
-                        />
-                    ))
-                ) : (
-                    <div className="text-gray-500 text-center py-4">
-                        {isSubmitting ? "正在加载评论..." : "暂无评论"}
-                    </div>
-                )}
+                            <CommentCard
+                                key={comment.id}
+                                data={comment}
+
+                            />
+                        ))
+                    ) : (
+                        <div className="text-gray-500 text-center py-4">
+                            {isSubmitting ? "正在加载评论..." : "暂无评论"}
+                        </div>
+                    )}
+                </div>
             </div>
+
         </div>
     );
 };

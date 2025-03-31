@@ -164,3 +164,92 @@ export interface ProcessedCommentList {
     success: boolean;
     showType: number;
 }
+
+// ---------------------------------------------
+export interface CommentList {
+    data?: CommentNodeResponse[] | null;
+    page?: number | null;
+    success?: boolean | null;
+    total?: number | null;
+}
+
+export interface CommentNodeResponse {
+    id?: string;
+    author?: UserInfoResponse;
+    content?: null | string;
+    createTime?: ZonedDateTime;
+    depth?: number | null;
+    path?: null | string;
+    hasMoreReply?: boolean | null;
+    interaction?: CommentInteractionResponse;
+    replies?: CommentNodeResponse[] | null;
+    likeCount?: number | null;
+}
+
+
+
+export interface UserInfoResponse {
+    avatar?: string;
+    id?: number;
+    username?: string;
+    level: number;
+    rank: string;
+}
+
+
+
+
+// export interface CommentResponse {
+//     author?: UserInfoResponse;
+//     content?: null | string;
+//     createTime?: ZonedDateTime;
+//     depth?: number | null;
+//     id?: UUID;
+//     path?: null | string;
+//
+// }
+
+
+// export interface UserInfoResponse {
+//     avatar?: null | string;
+//     id?: number | null;
+//     username?: null | string;
+//     level: number;
+//     rank: string;
+// }
+
+
+
+
+
+
+
+export interface ZonedDateTime {
+
+    dateTime?: null | string;
+
+    offset?: ZoneOffset;
+
+    zone?: { [key: string]: any };
+
+}
+
+
+export interface ZoneOffset {
+    totalSeconds?: number | null;
+
+}
+
+
+export interface UUID {
+    leastSigBits?: number | null;
+    mostSigBits?: number | null;
+
+}
+
+
+export interface CommentInteractionResponse {
+    likeCount?: number | null;
+    replyCount?: number | null;
+
+}
