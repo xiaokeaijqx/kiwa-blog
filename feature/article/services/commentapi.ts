@@ -1,4 +1,4 @@
-import {CommentList, ProcessedCommentList} from "@/feature/article/types";
+import {CommentList, LikeCommentResponse, ProcessedCommentList, UserLikeComment} from "@/feature/article/types";
 import axiosInstance from "@/lib/axios";
 import {BASE_URL} from "@/lib/constans";
 import exp from "node:constants";
@@ -29,4 +29,14 @@ export const ArticleComment = async (
 export const queryComment = async ( params: { targetId: string }): Promise<CommentList> => {
     const {data: res} = await axiosInstance.get(`${BASE_URL}/comment`, {params})
     return res
+}
+export  const queryLikeComment = async (id:string,userId:number,targetType:string,isActive:boolean):Promise<LikeCommentResponse>=>{
+    const {data} = await axiosInstance.post(`${BASE_URL}/interaction/comment/like`,{
+        targetId:id,
+        userId:userId,
+        targetType:targetType,
+        isActive:isActive
+
+    })
+    return data
 }

@@ -174,15 +174,15 @@ export interface CommentList {
 }
 
 export interface CommentNodeResponse {
-    id?: string;
+    id: string ;
     author?: UserInfoResponse;
     content?: null | string;
     createTime?: ZonedDateTime;
     depth?: number | null;
     path?: null | string;
     hasMoreReply?: boolean | null;
-    interaction?: CommentInteractionResponse;
     replies?: CommentNodeResponse[] | null;
+    replyCount?: number | null;
     likeCount?: number | null;
 }
 
@@ -196,7 +196,26 @@ export interface UserInfoResponse {
     rank: string;
 }
 
+export interface UserLikeComment {
+    isActive?: boolean | null;
+    targetId?: UUID;
+    targetType?: TargetType;
+    userId?: number | null;
+}
+export enum TargetType {
+    Article = "ARTICLE",
+    Comment = "COMMENT",
+}
 
+
+export interface LikeCommentResponse
+{
+    "data": null,
+    "errorCode": number,
+    "errorMessage": string,
+    "success": boolean,
+    "showType": number
+}
 
 
 // export interface CommentResponse {
@@ -253,3 +272,4 @@ export interface CommentInteractionResponse {
     replyCount?: number | null;
 
 }
+
