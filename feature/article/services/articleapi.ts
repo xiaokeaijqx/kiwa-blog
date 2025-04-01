@@ -10,7 +10,7 @@ import {
 import {articleTransformer} from "@/feature/article/transformers";
 
 export const querySortArticles = async (): Promise<ProcessedCategoryItemList> => {
-    const {data} = await axiosInstance.get(`${BASE_URL}/article/main`);
+    const {data} = await axiosInstance.get(`/api/article/main`);
     //article的合集
     console.log(data)
 

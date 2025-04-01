@@ -183,7 +183,7 @@ export interface CommentNodeResponse {
     hasMoreReply?: boolean | null;
     replies?: CommentNodeResponse[] | null;
     replyCount?: number | null;
-    likeCount?: number | null;
+    likeCount: number ;
 }
 
 

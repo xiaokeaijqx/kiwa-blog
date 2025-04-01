@@ -10,10 +10,13 @@ interface CommentCardProps {
     isReply?: boolean
 }
 
+
 const Comment = ({data, isReply = false}: CommentCardProps) => {
         const [isLiked, setIsLiked] = useState(false);
         const [isDisliked, setIsDisliked] = useState(false);
+        const [commentLike,setCommentLike] = useState(data.likeCount)
 
+const  userId =11
         const handleLikeClick = () => {
            //异步所以必须用本地变量
             const like = !isLiked;
@@ -22,16 +25,19 @@ const Comment = ({data, isReply = false}: CommentCardProps) => {
             setIsLiked(like);
             setIsDisliked(false);
             console.log(like)//true
-            queryLikeComment(data.id, 11, "COMMENT", like)
+            queryLikeComment(data.id, Number(userId), "COMMENT", like)
                 .then(r => {
                     console.log(r)
                     if (r.success && like) {
                         console.log("点赞成功,isLiked")
                         toast.success("点赞成功")
                         setIsLiked(true)
+                        setCommentLike(commentLike+1)
                     } else {
                         console.log(`点赞失败,${like}`)
                         setIsLiked(false)
+                        setCommentLike(commentLike-1)
+
                     }
 
                 })
@@ -49,7 +55,7 @@ const Comment = ({data, isReply = false}: CommentCardProps) => {
                         className={`${isReply ? "w-[40px] h-[40px]" : "w-[60px] h-[60px]"} overflow-hidden relative rounded-full border-2 border-indigo-500`}
                     >
                         <Image
-                            src={data.author?.avatar}
+                            src={data.author?.avatar || "https://avatars.githubusercontent.com/u/74864696"}
                             alt={"用户头像"}
                             fill
                             className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
@@ -71,12 +77,12 @@ const Comment = ({data, isReply = false}: CommentCardProps) => {
                     <div className={"flex items-center gap-8 mt-5"}>
                         <p className={`text-sm text-gray-500 `}>{data.createTime?.dateTime}</p>
                         <div className={`text-sm text-gray-500  ${isLiked ? 'text-indigo-500' : ''}`}
-                             onClick={() => handleLikeClick()}>{data.likeCount}
+                             onClick={() => handleLikeClick()}>{commentLike}
                             <ThumbsUp
                                 className={`inline-block w-4 h-4 ${isLiked ? 'fill-indigo-500 stroke-indigo-500' : 'stroke-current'}`}/>
                         </div>
                         <div className={"text-sm text-gray-500 "}
-                        >{data.replyCount}
+                        >{commentLike}
                             <ThumbsDown
                                 className={`inline-block w-4 h-4 ${isDisliked ? 'fill-indigo-500 stroke-indigo-500' : 'stroke-current'}`}
                             />

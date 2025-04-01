@@ -6,13 +6,14 @@ import {toast} from "sonner";
 import {ProcessedArticle} from "@/feature/article/types";
 import indexImage1 from "@/public/indexImage1.jpg";
 import Image from "next/image";
-import {Calendar, Eye,  User} from "lucide-react";
-import Thumbs from "@/components/shared/Thumbs";
+import {Calendar, Eye, Star, ThumbsDown, ThumbsUp, User} from "lucide-react";
 
 import {useParams} from "next/navigation";
-import InputCard from "@/components/shared/InputCard"; // 导入 useRouter
+import InputCard from "@/components/shared/InputCard";
+import {queryLikeArticle, queryLikeComment, queryStarArticle} from "@/feature/article/services/commentapi";
+import {boolean} from "zod"; // 导入 useRouter
 
-
+//后段没给点赞收藏初始状态
 const Page = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const params = useParams();
@@ -42,23 +43,90 @@ const Page = () => {
         summary: "",
         timestamp: 0,
     });
-    // const [isClient, setIsClient] = useState(false);
-    // useEffect(() => {
-    //     setIsClient(true); // 确保在客户端渲染时更新状态
-    // }, []);
+    const [isLiked, setIsLiked] = useState(false);
+    const [isStared, setIsStared] = useState(false);
 
-    // const { id } = isClient ? router.query : {}; // 确保在客户端渲染时获取 router.query
+    const [isDisliked, setIsDisliked] = useState(false);
+    const [articleLikeCount, setArticlelikecount] = useState(0);
+    const [articleStarCount, setArticleStarcount] = useState(0);
+    const  userId =11
+    const handleLikeClick = () => {
+        //异步所以必须用本地变量
+        const like = !isLiked;
+        // if (isLiked){
+        console.log(isLiked) //false
+        setIsLiked(like);
+        setIsDisliked(false);
+        console.log(like)//true
+        queryLikeArticle(article.id, Number(userId), "ARTICLE", like)
+            .then(r => {
+                console.log(r)
+                if (r.success && like) {
+                    console.log("点赞成功,isLiked")
+                    toast.success("点赞成功")
+                    setIsLiked(true)
+                    setArticlelikecount(articleLikeCount+1)
 
+                } else {
+                    console.log(`点赞失败,${like}`)
+                    setIsLiked(false)
+                    setArticlelikecount(articleLikeCount-1)
+                }
 
+            }).catch(() => {
+                console.log("点赞失败")
+            setIsLiked(false)
+
+        })
+
+        // }
+
+    }
+    const handleStarClick = () => {
+        //异步所以必须用本地变量
+        const clickStar = !isStared;
+        // if (isLiked){
+
+        setIsStared(clickStar);
+
+        console.log(Star)//true
+        queryStarArticle(article.id, Number(userId), "ARTICLE", clickStar)
+            .then(r => {
+                console.log(r)
+                if ( clickStar) {
+                    console.log("收藏成功,isStared")
+                    toast.success("收藏成功")
+                    setIsStared(true)
+                    setArticleStarcount(articleStarCount+1)
+
+                } else {
+                    console.log(`收藏失败,${isStared}`)
+                    setIsStared(false)
+                    setArticleStarcount(articleStarCount-1)
+                }
+
+            }).catch(() => {
+                console.log("点赞失败")
+                setIsStared(false)
+
+            })
+
+        // }
+
+    }
 
     useEffect(() => {
         // if (!id) return; // 如果 articleId 不存在，返回
         console.log(id);
+        if (!id) return // 参数未准备好时直接返回
+
         const getQueryArticleById = async () => {
             setLoading(true); // 设置加载状态为 true
             try {
                 const { data } = await queryArticleById(id as string); // 请求文章数据
                 setArticle(data); // 设置文章数据
+                setArticlelikecount(data.likeCount)
+                setArticleStarcount(data.favoriteCount)
             } catch (error) {
                 console.log(error);
                 toast.error("文章加载失败！");
@@ -67,7 +135,7 @@ const Page = () => {
             }
         };
         getQueryArticleById();
-    }, []);
+    }, [id]);
 
     if (loading) {
         return <div>加载中...</div>; // 加载状态
@@ -155,13 +223,14 @@ const Page = () => {
                                         d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z"
                                         fill="#FF713C"></path>
                                 </svg>
-                            {article.favoriteCount}赞
+                            {article.likeCount}赞
             </span>
                     </div>
                 </div>
             </div>
             {/*文章主题*/}
-            <div className={"min-w-[600px]  w-[70vw] mx-auto rounded-[2rem] shadow-box bg-white relative top-[-5rem] py-[5rem] px-[4rem]"}>
+            <div
+                className={"min-w-[600px]  w-[70vw] mx-auto rounded-[2rem] shadow-box bg-white relative top-[-5rem] py-[5rem] px-[4rem]"}>
 
                 <h1>{article.title}</h1>
                 <p className={"min-h-[30vh]"}>{article.content}</p>
@@ -171,9 +240,30 @@ const Page = () => {
                     </span>
                 </div>
                 <Notecard name={article.author}/>
-                <Thumbs/>
+                <div className={"flex justify-center gap-[4rem] my-[4rem] mx-0"}>
+                    <div className={"flex items-center gap-8 mt-5"}>
+                        <div className={`text-gray-500 flex text-center gap-[1rem] ${isLiked ? 'text-indigo-500' : ''}`}
+                             onClick={() => handleLikeClick()}>
+
+                            <ThumbsUp
+                                className={` w-[24px] ${isLiked ? 'fill-indigo-500 stroke-indigo-500' : 'stroke-current'}`}/>
+                            <span>{articleLikeCount}</span>
+                        </div>
+
+                        <div className={`text-gray-500 flex text-center gap-[1rem] ${isLiked ? 'text-indigo-500' : ''}`}
+                             onClick={() => handleStarClick()}>
+
+                            <Star
+                                className={` w-[24px] ${isStared ? 'fill-indigo-500 stroke-indigo-500' : 'stroke-current'}`}/>
+                            <span>{articleStarCount}</span>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
-            {/*评论区*/}
+            {/*评论
+          区*/}
             {/* 评论区域 */}
             <section className={"w-full"}>
                 <InputCard data={article}/>

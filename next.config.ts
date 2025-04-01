@@ -2,11 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-};
-
-export default nextConfig;
-
-module.exports = {
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: 'http://2vna7e.natappfree.cc/:path*',
+            },
+        ];
+    },
     images: {
         domains: ["avatars.githubusercontent.com"], // 添加允许的域名
         // 可选扩展配置（按需调整）：
@@ -14,3 +17,5 @@ module.exports = {
         deviceSizes: [640, 1080],   // 支持的设备宽度
     },
 };
+
+export default nextConfig;

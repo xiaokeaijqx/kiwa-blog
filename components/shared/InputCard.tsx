@@ -7,10 +7,10 @@ import {toast} from "sonner";
 
 const InputCard = ({data}: {data:ProcessedArticle}) => {
     const [comment, setComment] = useState('');
-    const [commentData, setCommentData] = useState<CommentNodeResponse[]|  undefined| null>()
+    const [commentData, setCommentData] = useState<CommentNodeResponse[] | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const userId = "11";
+    const userId = 11;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,12 +26,16 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
 
         try {
             // 提交评论
-            const response = await ArticleComment(data.id, comment, userId,"2","type");
+            await ArticleComment(data.id, userId,"ARTICLE",null,comment);
             console.log('Comment submitted successfully!');
             // setCommentData(response.data)
             // 清空输入框
             setComment('');
             toast.success("评论成功！");
+            const response = await queryComment({ targetId: data.id, depth: 0, previewReplyCount: 3, sortType: "DESC" });
+            setCommentData(response.data);
+
+
 
             // 更新评论数量（假设 data 是一个状态，可以通过父组件更新）
             // 例如：onCommentSubmit();
@@ -44,16 +48,26 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
     };
 
     useEffect(() => {
+        // 添加data.id存在性检查
+        if (!data?.id) return;
+
         const fetchComments = async () => {
             try {
-                const response = await queryComment({ targetId: "your-target-id" });
-                setCommentData(response.data)
+                const response = await queryComment({
+                    targetId: data.id,
+                    depth: 0,
+                    previewReplyCount: 3,
+                    sortType: "DESC"
+                });
+                setCommentData(response.data);
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
         };
-        fetchComments()
-    }, []);
+
+        const timer = setTimeout(fetchComments, 100); // 添加防抖
+        return () => clearTimeout(timer);
+    }, [data.id]); // 确保data是memoized对象
 
     return (
         <div className={"min-w-[600px]  w-[70vw] mx-auto "}>
@@ -108,7 +122,7 @@ const InputCard = ({data}: {data:ProcessedArticle}) => {
                     </fieldset>
                 </div>
                 <div className={"w-full mt-[2rem]"}>
-                    {commentData ? (
+                    {commentData && commentData.length > 0 ? (
                         commentData.map((comment) => (
 
                             <CommentCard
